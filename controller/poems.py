@@ -1,6 +1,6 @@
-import htmlUtil
+from util import htmlUtil
 from docx import Document
-import docxUtil
+from util import docxUtil
 
 #获取目标URL
 def get_target_url(url,str1):
@@ -81,8 +81,6 @@ def write_poems_docx(poems,writer):
 
 
 def get_poems(writer):
-
-    # writer='李白'
     writer_e=htmlUtil.encodeurl(writer)
     url='http://www.shicimingju.com/chaxun/all/'+writer_e
     html=htmlUtil.getReq(url)
@@ -106,7 +104,7 @@ def get_poems(writer):
     prefix=target_url[0:target_url.rindex('/')+1]
     # print(target_url,prefix)
     #前缀
-    pre=suffix[0:1]
+    pre=suffix[0:suffix.index('.')]
     #后缀
     suf='.'+suffix.split('.')[1]
     # print(suf)
@@ -116,6 +114,6 @@ def get_poems(writer):
 
 if __name__=="__main__":
     print("start...\n")
-    writer='李白'
+    writer='杜甫'
     get_poems(writer)
     print("\n"+"end")
