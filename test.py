@@ -48,6 +48,11 @@ from docx.shared import Pt
 #
 #     f.write(a)
 
-total=407
-toalPage=int(total/40)+1
-print(toalPage)
+# total=407
+# toalPage=int(total/40)+1
+# print(toalPage)
+
+import urllib.parse
+url=urllib.parse.quote("王维")
+url2='%E7%8E%8B%E7%BB%B4'
+print(url==url2)

@@ -42,7 +42,7 @@ def get_poemTitle_list(pre,suf,pages,url_pre):
     return poems
 
 #诗歌内容列表写入word
-def write_poems_docx(poems):
+def write_poems_docx(poems,writer):
     content_list=[]
     document = Document()
     i=0
@@ -63,7 +63,7 @@ def write_poems_docx(poems):
         text=str(content.text).replace('<br/>','\n').replace('<br>','\n')
         #赏析
         sx_str=''
-        if sx and h3_text!='王维简介':
+        if sx and h3_text!=writer+'简介':
             sx_str=str(sx.text).replace('<br/>','\n').replace('<br>','\n')
 
         #写入word
@@ -77,33 +77,45 @@ def write_poems_docx(poems):
         #     f.write(text+'\n')
         #     f.write(sx_str)
 
-    document.save('H:/test/wangwei2.docx')
-url='http://www.shicimingju.com/chaxun/all/%E7%8E%8B%E7%BB%B4'
-html=htmlUtil.getReq(url)
-# print(html)
-soup=htmlUtil.parseHtml(html)
-#获取a标签
-a=soup.find(id='alllist').find('a')
-# print(a)
-a_href=str(a.attrs.get('href'))
-a_text=str(a.text)
-# print(a_href,a_text)
-#总页数
-total=int(a_text[a_text.index('(')+1:a_text.index(')')])
-# print(totalPage)
-#获取目标URL,前后缀
-target_url=get_target_url(url,a_href)
-# print(target_url)
-target_url_=target_url.split('/')
-suffix=target_url_[len(target_url_)-1]
-# print(suffix)
-prefix=target_url[0:target_url.rindex('/')+1]
-# print(target_url,prefix)
-#前缀
-pre=suffix[0:1]
-#后缀
-suf='.'+suffix.split('.')[1]
-# print(suf)
-totalPage=int(total/40)+1
-poems=get_poemTitle_list(pre,suf,totalPage,prefix)
-write_poems_docx(poems)
+    document.save('H:/test/'+writer+'诗歌.docx')
+
+
+def get_poems(writer):
+
+    # writer='李白'
+    writer_e=htmlUtil.encodeurl(writer)
+    url='http://www.shicimingju.com/chaxun/all/'+writer_e
+    html=htmlUtil.getReq(url)
+    # print(html)
+    soup=htmlUtil.parseHtml(html)
+    #获取a标签
+    a=soup.find(id='alllist').find('a')
+    # print(a)
+    a_href=str(a.attrs.get('href'))
+    a_text=str(a.text)
+    # print(a_href,a_text)
+    #总页数
+    total=int(a_text[a_text.index('(')+1:a_text.index(')')])
+    # print(totalPage)
+    #获取目标URL,前后缀
+    target_url=get_target_url(url,a_href)
+    # print(target_url)
+    target_url_=target_url.split('/')
+    suffix=target_url_[len(target_url_)-1]
+    # print(suffix)
+    prefix=target_url[0:target_url.rindex('/')+1]
+    # print(target_url,prefix)
+    #前缀
+    pre=suffix[0:1]
+    #后缀
+    suf='.'+suffix.split('.')[1]
+    # print(suf)
+    totalPage=int(total/40)+1
+    poems=get_poemTitle_list(pre,suf,totalPage,prefix)
+    write_poems_docx(poems,writer)
+
+if __name__=="__main__":
+    print("start...\n")
+    writer='李白'
+    get_poems(writer)
+    print("\n"+"end")

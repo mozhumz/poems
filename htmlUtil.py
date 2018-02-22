@@ -1,14 +1,15 @@
 import requests
 from bs4 import BeautifulSoup
+import urllib.parse
+
 headers={
 'User-Agent':
 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.104 Safari/537.36 Core/1.53.4549.400 QQBrowser/9.7.12900.400'
 }
 
-# r=requests.get(url='http://www.shicimingju.com/',headers=headers)
-# r.encoding = r.apparent_encoding
-# cookie_dict=r.cookies.get_dict()
-# print(cookie_dict)
+def encodeurl(url):
+    return urllib.parse.quote(url)
+
 def getReq(url):
     r=requests.get(url=url,headers=headers)
     r.encoding = r.apparent_encoding
